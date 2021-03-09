@@ -10,7 +10,7 @@ import 'windows.dart' as windows;
 
 class OpenFile {
   static const MethodChannel _channel = const MethodChannel('open_file');
-  
+
   OpenFile._();
 
   ///linuxDesktopName like 'xdg'/'gnome'
@@ -36,5 +36,11 @@ class OpenFile {
     final _result = await _channel.invokeMethod('open_file', map);
     Map resultMap = json.decode(_result);
     return OpenResult.fromJson(resultMap);
+  }
+
+  static Future<Null> close() async {
+    if (Platform.isIOS) {
+      await _channel.invokeMethod('close_file');
+    }
   }
 }
